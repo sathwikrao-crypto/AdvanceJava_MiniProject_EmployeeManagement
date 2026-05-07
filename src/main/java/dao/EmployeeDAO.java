@@ -8,16 +8,42 @@ public class EmployeeDAO {
 
     private String url = "jdbc:mysql://localhost:3306/employee_db?useSSL=false&serverTimezone=UTC";
     private String user = "root";   // change if needed
-    private String pass = "Sathwik@2007"; // change if needed
+    private String pass = "Sathwik@2007";   // change if needed
 
+    // =========================
     // DATABASE CONNECTION
+    // =========================
     private Connection getConn() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(url, user, pass);
     }
 
     // =========================
-    // ADD EMPLOYEE (AUTO INCREMENT EMPNO)
+    // GET NEXT EMPLOYEE ID
+    // (For displaying auto-generated Emp ID in Add Page)
+    // =========================
+    public int getNextEmpId() throws Exception {
+
+        int nextId = 1;
+
+        String sql = "SELECT IFNULL(MAX(Empno), 0) + 1 AS nextId FROM Employee";
+
+        try (
+            Connection con = getConn();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+
+            if (rs.next()) {
+                nextId = rs.getInt("nextId");
+            }
+        }
+
+        return nextId;
+    }
+
+    // =========================
+    // ADD EMPLOYEE
     // =========================
     public void addEmployee(Employee e) throws Exception {
 
@@ -146,7 +172,7 @@ public class EmployeeDAO {
     }
 
     // =========================
-    // REPORT 1: NAME STARTS WITH
+    // REPORT 1 : NAME STARTS WITH
     // =========================
     public List<Employee> nameStarts(String letter) throws Exception {
         return getByQuery(
@@ -156,7 +182,7 @@ public class EmployeeDAO {
     }
 
     // =========================
-    // REPORT 2: EXPERIENCE
+    // REPORT 2 : EXPERIENCE
     // =========================
     public List<Employee> experience(int years) throws Exception {
         return getByQuery(
@@ -166,7 +192,7 @@ public class EmployeeDAO {
     }
 
     // =========================
-    // REPORT 3: SALARY GREATER THAN
+    // REPORT 3 : SALARY GREATER THAN
     // =========================
     public List<Employee> salary(double sal) throws Exception {
         return getByQuery(

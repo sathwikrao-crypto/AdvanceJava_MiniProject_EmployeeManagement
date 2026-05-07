@@ -1,3 +1,4 @@
+<%@ page import="dao.EmployeeDAO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
@@ -7,7 +8,6 @@
 <title>Add Employee</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 
 <body class="bg-light">
@@ -18,11 +18,24 @@
 
         <h3>Add Employee</h3>
 
+<%
+    EmployeeDAO dao = new EmployeeDAO();
+    int nextEmpId = dao.getNextEmpId();   // fetch next emp id
+%>
+
         <form action="<%=request.getContextPath()%>/AddEmployeeServlet" method="post">
 
-            <!-- Empno Removed because AUTO_INCREMENT -->
+            <!-- Auto Generated Employee ID -->
 
-            <input 
+            <input
+                type="number"
+                class="form-control mb-2"
+                name="empno"
+                value="<%= nextEmpId %>"
+                readonly
+            >
+
+            <input
                 type="text"
                 class="form-control mb-2"
                 name="name"
@@ -30,14 +43,14 @@
                 required
             >
 
-            <input 
+            <input
                 type="date"
                 class="form-control mb-2"
                 name="doj"
                 required
             >
 
-            <select 
+            <select
                 class="form-control mb-2"
                 name="gender"
                 required
@@ -47,7 +60,7 @@
                 <option value="Female">Female</option>
             </select>
 
-            <input 
+            <input
                 type="number"
                 step="0.01"
                 class="form-control mb-2"
@@ -59,6 +72,10 @@
             <button class="btn btn-success">
                 Add Employee
             </button>
+
+            <a href="index.jsp" class="btn btn-secondary">
+                Back
+            </a>
 
         </form>
 
