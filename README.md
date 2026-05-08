@@ -1,4 +1,5 @@
 # AdvanceJava_MiniProject_EmployeeManagement
+All the Project related JSP,SERVLET,JDBC CONNECTIVITY CODES are branched to master 
 Employee Management mini Project
 
 
